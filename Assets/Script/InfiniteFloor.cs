@@ -11,6 +11,8 @@ public class InfiniteFloor : MonoBehaviour
     public float distanceBetweenTiles;
     public float randomValue;
 
+    private bool theFirst = false;          //if theFirst == true 表第一塊地板是往右邊的
+
     private Vector3 previousTilePosition;
     private float startTime;
     private float k;
@@ -19,19 +21,21 @@ public class InfiniteFloor : MonoBehaviour
     private Vector3 otherDirection1 = new Vector3(1, 0, 0);      //右轉
     private Vector3 otherDirection2 = new Vector3(-1, 0, 0);     //左轉
 
+    private bool lastDestroy = false;
+
     // Start is called before the first frame update
     void Start()
     {
         previousTilePosition = referenceObject.transform.position;
         startTime = Time.time;
+        TheFirstFloor();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Time.time - startTime > timeOffset)
-        {
-            //k = Random.value;
+        { 
             if (Random.value < randomValue)
             {
                 direction = mainDirection;
@@ -63,14 +67,34 @@ public class InfiniteFloor : MonoBehaviour
 
             Vector3 spawnPos = previousTilePosition + distanceBetweenTiles * direction;
             startTime = Time.time;
-            Instantiate(tileToSpawn, spawnPos, Quaternion.Euler(0, 0, 0));
+            GameObject floor = Instantiate(tileToSpawn, spawnPos, Quaternion.Euler(0, 0, 0));
             previousTilePosition = spawnPos;
+
+            //產生坑洞
+            if ((lastDestroy == false) && (Random.value < 0.05))
+            {
+                Destroy(floor);
+                lastDestroy = true;
+            }
+            else if(Random.value >= 0.05)
+            {
+                lastDestroy = false;
+            }
         }
 
         //T字路
 
 
 
-        //產生坑洞
+        
+    }
+
+    private void TheFirstFloor()
+    {
+        direction = mainDirection;
+        Vector3 spawnPos = previousTilePosition + distanceBetweenTiles * direction;
+        startTime = Time.time;
+        GameObject floor = Instantiate(tileToSpawn, spawnPos, Quaternion.Euler(0, 0, 0));
+        previousTilePosition = spawnPos;
     }
 }

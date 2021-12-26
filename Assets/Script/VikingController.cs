@@ -18,7 +18,7 @@ public class VikingController : MonoBehaviour
 
 
     //跑
-    private float movingSpeed = 10f;
+    private float movingSpeed = 7f;
 
     //轉向
     private bool turnLeft, turnRight;
@@ -34,18 +34,28 @@ public class VikingController : MonoBehaviour
 
     //動畫
     private Animator animator;
+    private Animator enemyAnimator;
     private bool run = false;
     private bool jump = false;
 
     //物理性質
     public Rigidbody transformRigidbody;
 
+    //總分、時間
+    public static int totalScore;
+    public static float survivalTime;
+
+    public Transform enemy;
 
     // Start is called before the first frame update
     void Start()
     {
         transformRigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        enemyAnimator = enemy.GetComponent<Animator>();
+
+        totalScore = 0;
+        survivalTime = 0;
     }
 
     // Update is called once per frame
@@ -60,13 +70,13 @@ public class VikingController : MonoBehaviour
 
         if(alive == false)
         {
-            //Debug.Log("You Die");
-
-            //跳到gameResult Scene
-            switcher.sceneIndexDestination = 3;
-            switcher.changeScene();
+            
+            StartCoroutine(GameOver());
         }
-
+        if(alive == true)
+        {
+            survivalTime += Time.deltaTime;
+        }
 
         /************** 移動相關 *************/
         //跑，自動奔跑
@@ -128,36 +138,42 @@ public class VikingController : MonoBehaviour
         //動畫
         animator.SetBool("isRun", run);
         animator.SetBool("isJump", jump);
+        enemyAnimator.SetBool("alive", alive);
 
     }
     
 
     /*********** 碰撞相關 **********/
 
-    /*
     public void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "viking")
+        if (collision.gameObject.name == "coin(Clone)")
         {
-            transform.localScale *= 1.5f;
+            Destroy(collision.gameObject);
+            totalScore++;
         }
-        else
+        if (collision.gameObject.name == "barrier_tree(Clone)")
         {
-            transform.localScale /= 1.5f;
+            alive = false;
         }
-    }
-
-    public void OnCollisionStay(Collision collision)
-    {
+        if (collision.gameObject.name == "barrier_mashroom(Clone)")
+        {
+            alive = false;
+        }
         
     }
 
-    public void OnCollisionExit(Collision collision)
-    {
-        
-    }
-    */
 
+    IEnumerator GameOver()
+    {
+        transform.localPosition -= movingSpeed * Time.deltaTime * transform.forward;
+        enemy.position += (movingSpeed / 5) * Time.deltaTime * enemy.transform.forward;
+        //enemyAnimator.Play("Boxing");
+        yield return new WaitForSeconds(2f);
+        //跳到gameResult Scene
+        switcher.sceneIndexDestination = 3;
+        switcher.changeScene();
+    }
 
     /************ Trigger相關 ************/
     /*可用在金幣、Enemy*/

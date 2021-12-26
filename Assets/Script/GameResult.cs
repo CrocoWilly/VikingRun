@@ -5,11 +5,15 @@ using UnityEngine.UI;
 
 public class GameResult : MonoBehaviour
 {
-    public Text s;
+    public Text score;
+    public Text time;
     void Start()
     { 
-        string scoreStr= (CoinSpawner.totalScore).ToString();
-        s.text = scoreStr;
+        string scoreStr = (VikingController.totalScore).ToString();
+        score.text = scoreStr;
+
+        string timeStr = (VikingController.survivalTime).ToString("F2");
+        time.text = "Survival time: " + timeStr + " sec";
     }
 
 }

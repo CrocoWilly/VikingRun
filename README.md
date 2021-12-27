@@ -28,7 +28,7 @@ Unity2020.3
 
     每個C# script的class只專門做一件事
       例如:sceneSwitcher只用來換scene，且每次換scene都用它。
-          infiniteFloor就只產生地板和坑洞，不會產生coin和barrier
+          infiniteFloor就只做跟地板生成有關的事，不會跟coin和barrier的生成有關
 
 3.Some special game objects which aren’t mentioned above
   

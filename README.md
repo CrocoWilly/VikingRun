@@ -26,10 +26,13 @@ Unity2020.3
 
 2.A good game structure design (code)
 
-    每個C# script的class只專門做一件事
-      例如:sceneSwitcher只用來換scene，且每次換scene都用它。
-          infiniteFloor就只做跟地板生成有關的事，不會跟coin和barrier的生成有關
+    (1)每個C# script的class只專門做一件事
+       例如:sceneSwitcher只用來換scene，且每次換scene都用它。
+            infiniteFloor就只做跟地板生成有關的事，不會跟coin和barrier的生成有關
+    (2)Viking死掉的時候，會讓畫面等待2秒才進到gameover的畫面
+    (3)不會連續產生2個坑洞，以免viking跳不過去
 
+	
 3.Some special game objects which aren’t mentioned above
   
     (1)viking在跳和掉落深淵的時候會有jump的動畫

@@ -11,8 +11,6 @@ public class InfiniteFloor : MonoBehaviour
     public float distanceBetweenTiles;
     public float randomValue;
 
-    private bool theFirst = false;          //if theFirst == true 表第一塊地板是往右邊的
-
     private Vector3 previousTilePosition;
     private float startTime;
     private float k;
@@ -46,23 +44,6 @@ public class InfiniteFloor : MonoBehaviour
                 direction = otherDirection1;
                 mainDirection = direction;
                 otherDirection1 = temp;
-                /*
-                if (k >= (randomValue / 2))
-                {
-                    Vector3 temp = direction;
-                    direction = otherDirection1;
-                    mainDirection = direction;
-                    otherDirection1 = temp;
-                }
-                else
-                {
-                    Vector3 temp = direction;
-                    direction = otherDirection2;
-                    mainDirection = direction;
-                    otherDirection2 = temp;
-                }
-                */
-                
             }
 
             Vector3 spawnPos = previousTilePosition + distanceBetweenTiles * direction;
@@ -71,7 +52,7 @@ public class InfiniteFloor : MonoBehaviour
             previousTilePosition = spawnPos;
 
             //產生坑洞
-            if ((lastDestroy == false) && (Random.value < 0.05))
+            if ((lastDestroy == false) && (Random.value < 0.1))
             {
                 Destroy(floor);
                 lastDestroy = true;
@@ -81,12 +62,6 @@ public class InfiniteFloor : MonoBehaviour
                 lastDestroy = false;
             }
         }
-
-        //T字路
-
-
-
-        
     }
 
     private void TheFirstFloor()
@@ -98,3 +73,20 @@ public class InfiniteFloor : MonoBehaviour
         previousTilePosition = spawnPos;
     }
 }
+
+/* 試圖做T字路口
+if (k >= (randomValue / 2))
+{
+    Vector3 temp = direction;
+    direction = otherDirection1;
+    mainDirection = direction;
+    otherDirection1 = temp;
+}
+else
+{
+    Vector3 temp = direction;
+    direction = otherDirection2;
+    mainDirection = direction;
+    otherDirection2 = temp;
+}
+*/

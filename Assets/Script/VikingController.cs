@@ -62,25 +62,26 @@ public class VikingController : MonoBehaviour
     void Update()
     {
         /************* 死亡相關 **************/
-        
-        if(transform.localPosition.y < -50)     //or跟enemy碰到 --> die
+
+        if (transform.localPosition.y < -50)     //or跟enemy碰到 --> die
         {
             alive = false;
         }
 
-        if(alive == false)
+        if (alive == false)
         {
-            
+            //animator.SetBool("isRun", run);
             StartCoroutine(GameOver());
+            run = false;
         }
-        if(alive == true)
+        if (alive == true)
         {
             survivalTime += Time.deltaTime;
+            run = true;
         }
 
         /************** 移動相關 *************/
         //跑，自動奔跑
-        run = true;
         transform.localPosition += movingSpeed * Time.deltaTime * transform.forward;
 
         if (Input.GetKey(KeyCode.A))
@@ -90,7 +91,7 @@ public class VikingController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.D))
         {
-            transform.localPosition += movingSpeed * Time.deltaTime * transform.right;    
+            transform.localPosition += movingSpeed * Time.deltaTime * transform.right;
             run = true;
         }
 
@@ -106,15 +107,15 @@ public class VikingController : MonoBehaviour
         turnLeft = Input.GetKeyDown(KeyCode.J);
         turnRight = Input.GetKeyDown(KeyCode.K);
 
-        if(turnLeft == true)
+        if (turnLeft == true)
         {
             transform.Rotate(new Vector3(0f, -90f, 0f));
         }
-        if(turnRight == true)
+        if (turnRight == true)
         {
             transform.Rotate(new Vector3(0f, 90f, 0f));
         }
-        
+
 
         //跳，不能二段跳
         jump = false;
@@ -125,7 +126,7 @@ public class VikingController : MonoBehaviour
             transformRigidbody.AddForce(jumpDirection * jumpForceAmount);
         }
 
-        if(transform.localPosition.y < 1 && transform.localPosition.y > -1)
+        if (transform.localPosition.y < 1 && transform.localPosition.y > -1)
         {
             onGround = true;
         }
@@ -141,7 +142,7 @@ public class VikingController : MonoBehaviour
         enemyAnimator.SetBool("alive", alive);
 
     }
-    
+
 
     /*********** 碰撞相關 **********/
 
@@ -160,7 +161,7 @@ public class VikingController : MonoBehaviour
         {
             alive = false;
         }
-        
+
     }
 
 
@@ -168,36 +169,13 @@ public class VikingController : MonoBehaviour
     {
         transform.localPosition -= movingSpeed * Time.deltaTime * transform.forward;
         enemy.position += (movingSpeed / 5) * Time.deltaTime * enemy.transform.forward;
-        //enemyAnimator.Play("Boxing");
         yield return new WaitForSeconds(2f);
         //跳到gameResult Scene
         switcher.sceneIndexDestination = 3;
         switcher.changeScene();
     }
 
-    /************ Trigger相關 ************/
-    /*可用在金幣、Enemy*/
-
-    /*
-    public void OnTriggerEnter(Collider collider)
-    {
-        Destroy(collider.gameObject);
-    }
-
-    public void OnTriggerStay(Collider other)
-    {
-        
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        
-    }
-
-    */
 }
-
-
 
 
 /*跑

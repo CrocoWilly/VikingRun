@@ -26,11 +26,11 @@ public class VikingController : MonoBehaviour
     //跳
     private bool onGround = true;
     private Vector3 jumpDirection = new Vector3(0, 1, 0);
-    public float jumpForceAmount;
+    public float jumpForceAmount = 10f;
 
     //加速
     private Vector3 moveDirection;
-    public float moveForceAmount;
+    public float moveForceAmount = 5f;
 
     //動畫
     private Animator animator;
